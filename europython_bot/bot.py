@@ -22,7 +22,7 @@ class Bot:
     """
 
     def __init__(self):
-        self.team = "TeamName"  # This is your team name
+        self.team = "SciBot"  # This is your team name
         # This is the course that the ship has to follow
         self.course = [
             Checkpoint(latitude = 19.642470, longitude = -67.647903, radius = 50.0),
