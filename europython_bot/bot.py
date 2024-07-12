@@ -25,20 +25,34 @@ class Bot:
         self.team = "TeamName"  # This is your team name
         # This is the course that the ship has to follow
         self.course = [
-            Checkpoint(latitude=43.797109, longitude=-11.264905, radius=50),
-            Checkpoint(longitude=-29.908577, latitude=17.999811, radius=50),
-            Checkpoint(latitude=-11.441808, longitude=-29.660252, radius=50),
-            Checkpoint(longitude=-63.240264, latitude=-61.025125, radius=50),
-            Checkpoint(latitude=2.806318, longitude=-168.943864, radius=1990.0),
-            Checkpoint(latitude=-62.052286, longitude=169.214572, radius=50.0),
-            Checkpoint(latitude=-15.668984, longitude=77.674694, radius=1190.0),
-            Checkpoint(latitude=-39.438937, longitude=19.836265, radius=50.0),
-            Checkpoint(latitude=14.881699, longitude=-21.024326, radius=50.0),
-            Checkpoint(latitude=44.076538, longitude=-18.292936, radius=50.0),
+            Checkpoint(latitude = 19.642470, longitude = -67.647903, radius = 50.0),
+            Checkpoint(latitude = 17.547803, longitude = -67.684136, radius = 50.0),
+            Checkpoint(latitude = 9.790025, longitude = -80.239573, radius = 25.0),
+            Checkpoint(latitude = 8.211505, longitude = -79.257962, radius = 5.0),
+            Checkpoint(latitude = 4.588588, longitude = -79.103848, radius = 5.0),
+            Checkpoint(latitude = 2.806318, longitude = -168.943864, radius = 1990.0),
+            Checkpoint(latitude=-45.323803, longitude = 146.583239, radius = 50.0),
+            Checkpoint(latitude = -15.668984, longitude = 77.674694, radius = 1190.0),
+            Checkpoint(latitude=16.052669, longitude=57.139665, radius=5.0),
+            Checkpoint(latitude=12.019005, longitude=43.842936, radius=5.0),
+            Checkpoint(latitude=13.261215, longitude=42.965917, radius=5.0),
+            Checkpoint(latitude=27.274732, longitude=34.780896, radius=5.0),
+            Checkpoint(latitude=27.446995, longitude=34.032762, radius=5.0),
+            Checkpoint(latitude=30.052491, longitude=32.247897, radius=50.0),
+            Checkpoint(latitude=31.649919, longitude=32.340517, radius=5.0),
+            Checkpoint(latitude=32.718687, longitude=31.067931, radius=5.0),
+            Checkpoint(latitude=35.563709, longitude=13.286058, radius=5.0),
+            Checkpoint(latitude=38.431296, longitude=10.546054, radius=5.0),
+            Checkpoint(latitude=37.193482, longitude=0.674736, radius=5.0),
+            Checkpoint(latitude=36.011121, longitude=-2.553028, radius=5.0),
+            Checkpoint(latitude=35.995605, longitude=-4.816351, radius=5.0),
+            Checkpoint(latitude=35.918048, longitude=-7.032032, radius=5.0),
+            Checkpoint(latitude=35.549149, longitude=-11.086910, radius=5.0),
+            Checkpoint(latitude=44.112596, longitude=-10.353684, radius=5.0),
             Checkpoint(
-                latitude=config.start.latitude,
-                longitude=config.start.longitude,
-                radius=5,
+                latitude = config.start.latitude,
+                longitude = config.start.longitude,
+                radius = 5,
             ),
         ]
 
@@ -78,13 +92,13 @@ class Bot:
             Method to query the weather forecast for the next 5 days.
             Example:
             current_position_forecast = forecast(
-                latitudes=latitude, longitudes=longitude, times=0
+                latitudes = latitude, longitudes=longitude, times = 0
             )
         world_map:
             Method to query map of the world: 1 for sea, 0 for land.
             Example:
             current_position_terrain = world_map(
-                latitudes=latitude, longitudes=longitude
+                latitudes = latitude, longitudes = longitude
             )
 
         Returns
@@ -104,19 +118,21 @@ class Bot:
 
         # TODO: Remove this, it's only for testing =================
         current_position_forecast = forecast(
-            latitudes=latitude, longitudes=longitude, times=0
+            latitudes = latitude, longitudes = longitude, times = 0
         )
-        current_position_terrain = world_map(latitudes=latitude, longitudes=longitude)
+        # print(current_position_forecast)    
+        current_position_terrain = world_map(latitudes = latitude, longitudes = longitude)
+        # print(current_position_terrain, "terrain")
         # ===========================================================
 
         # Go through all checkpoints and find the next one to reach
         for ch in self.course:
             # Compute the distance to the checkpoint
             dist = distance_on_surface(
-                longitude1=longitude,
-                latitude1=latitude,
-                longitude2=ch.longitude,
-                latitude2=ch.latitude,
+                longitude1 = longitude,
+                latitude1 = latitude,
+                longitude2 = ch.longitude,
+                latitude2 = ch.latitude,
             )
             # Consider slowing down if the checkpoint is close
             jump = dt * np.linalg.norm(speed)
@@ -124,12 +140,13 @@ class Bot:
                 instructions.sail = min(ch.radius / jump, 1)
             else:
                 instructions.sail = 1.0
+
             # Check if the checkpoint has been reached
             if dist < ch.radius:
                 ch.reached = True
             if not ch.reached:
                 instructions.location = Location(
-                    longitude=ch.longitude, latitude=ch.latitude
+                    longitude = ch.longitude, latitude = ch.latitude
                 )
                 break
 
